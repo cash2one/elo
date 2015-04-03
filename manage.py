@@ -26,6 +26,7 @@ url_root = CONF("URL_ROOT")
 
 default_port = 8888
 app = make_application(elo, debug, wsgi=True, settings_path=settings_path, url_root=url_root)
+setattr(app, '_wsgi', False)
 if options.cmd == "runserver":
     run_torweb.run(app, port=default_port)
 else:
