@@ -30,7 +30,7 @@ def __init_log(_type):
     _logger.addHandler(_log)
     return _logger
 
-logger = __init_log('payment')
+logger = __init_log('elo')
 
 
 
