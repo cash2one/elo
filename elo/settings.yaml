@@ -1,0 +1,25 @@
+app: elo
+language: python
+port: 8888
+
+# url根路径及静态文件根路径
+url_root: '/'
+static_domain: '/static'
+
+# 是否启用页面调试
+debug_page: True
+
+# sesion会话[MemocacheSessionStore]
+session_store: MemorySessionStore
+
+schemes:
+  - scheme: mysql
+    user: myapp
+    pass: myapp
+    host: 127.0.0.1
+    port: 3306
+    db: myapp
+    sqlalchemy: session
+
+#domain: "http://prod.game1.ll.sdo.com"
+domain: "http://127.0.0.1:8000"
