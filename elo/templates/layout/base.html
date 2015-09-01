@@ -1,0 +1,18 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<meta http-equiv="x-pjax-version" content="v123">
+</head>
+<body>
+<a data-pjax href="{{ reverse_url('index') }}">index</a>
+</br>
+<a data-pjax href="{{ reverse_url('main') }}">main</a>
+</br>
+<a data-pjax href="{{ reverse_url('topic') }}">topic</a>
+</br>
+{% block body %}
+{% endblock %}
+</body>
+</html>

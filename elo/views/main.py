@@ -10,12 +10,23 @@ import urllib
 import urllib2
 import time
 
-@url("/")
+@url("/", name="index")
 class MainHandler(Handler):
     def get(self):
         data = {"name": "torweb"}
+        return self.render("index.html", **data)
+
+@url("/main", name="main")
+class MainHandler(Handler):
+    def get(self):
+        data = {"name": "main"}
         return self.render("main.html", **data)
 
+@url("/topic", name="topic")
+class MainHandler(Handler):
+    def get(self):
+        data = {"name": "topic"}
+        return self.render("topic.html", **data)
 
 @url("/main.php/live/reward", name="reward")
 @url("/main.php/live/partyList", name="partyList")
