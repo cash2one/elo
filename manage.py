@@ -11,14 +11,15 @@ from torweb.application import make_application
 from torweb.config import CONFIG
 from torweb import run_torweb
 from code import interact
+from elo.shortcuts import logger
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
 
 settings_path = os.path.join(elo.base_path, "settings.yaml")
-logging.info("^_^")
-logging.info(settings_path)
+logger.info("^_^")
+logger.info(settings_path)
 
 CONF = CONFIG(settings_path)
 debug = CONF("DEBUG_PAGE")

@@ -4,41 +4,41 @@
 
 import elo
 import os
+import yaml
 import logging
+from logging.config import dictConfig
 import traceback
 
 from torweb.urls import url
 from torweb.tmpl import get_environment
 from torweb.config import CONFIG as CONFIGURATION
 
-CONFIG = CONFIGURATION(os.path.join(elo.base_path, "settings.yaml"))
+settings_path = os.path.join(elo.base_path, "settings.yaml")
+CONF = CONFIG = CONFIGURATION(settings_path)
+
+dictConfig(yaml.load(open(settings_path, 'r')))
+itornado = logging.getLogger("console")
+logger = logging.getLogger("file")
+iError = logging.getLogger("iError")
 
 env = get_environment(elo.__name__)
 
-cache = elo.cache
+# cache = elo.cache
+def get_cache():
+    from torweb.cache import MemcachedCache, NullCache
+    from werkzeug.contrib.cache import RedisCache
+    nullcache = NullCache()
+    try:
+        cache_servers = CONF('MEMCACHED')
+        if cache_servers:
+            cache = MemcachedCache(cache_servers)
+    except KeyError:
+        redis_cache_host = CONF("REDIS.HOST")
+        redis_cache_port = CONF("REDIS.PORT")
+        if redis_cache_host and redis_cache_port:
+            cache = RedisCache(redis_cache_host, redis_cache_port)
+    except KeyError:
+        cache = NullCache()
+    return cache
 
-from logging.handlers import TimedRotatingFileHandler
-from os.path import join
-
-def __init_log(_type):
-    _log_path = join(elo.base_path, 'static', 'log', _type)
-    if not os.path.exists(_log_path): os.makedirs(_log_path)
-    _log = TimedRotatingFileHandler(join(_log_path, '%s.log' % _type), 'MIDNIGHT')
-    _log.setFormatter(logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s'))
-    _log.setLevel(logging.NOTSET)
-    _logger = logging.getLogger(_type)
-    _logger.addHandler(_log)
-    return _logger
-
-logger = __init_log('elo')
-
-
-
-#from sqlalchemy import Table, Column, ForeignKey
-#from sqlalchemy.types import String, Integer, Unicode, Date, DateTime
-#from sqlalchemy.orm import mapper, relationship
-#from sqlalchemy import select, and_, or_
-#from sqlalchemy.ext.declarative import declarative_base
-#
-#BaseModel = declarative_base()
-
+cache = get_cache()
